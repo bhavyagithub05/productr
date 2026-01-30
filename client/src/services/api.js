@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const api = axios.create({
-  baseURL: 'https://productr-backend-8698.onrender.com', // Points to your Node.js Backend
+  baseURL: 'https://productr-backend-8698.onrender.com/api', // Points to your Node.js Backend
   headers: {
     'Content-Type': 'application/json'
   }
