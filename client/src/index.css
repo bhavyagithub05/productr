@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  /* These variables will now work as 'bg-sidebar-dark' or 'text-brand-orange' */
+  --color-sidebar-dark: #1e293b;
+  --color-brand-blue: #1e3a8a;
+  --color-brand-orange: #f97316;
+  --color-bg-light: #f8fafc;
+}
