@@ -13,6 +13,8 @@ const ProductsPage = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
   // Fetch Products on Load
   useEffect(() => {
     fetchProducts();
@@ -75,48 +77,46 @@ const ProductsPage = () => {
   return (
     <div className="flex h-screen bg-bg-light font-sans">
       {/* 1. Left Sidebar */}
-      <Sidebar />
+      <Sidebar isOpen={isMobileSidebarOpen} setIsOpen={setIsMobileSidebarOpen} />
 
       {/* 2. Main Content Area */}
-      <div className="flex-1 flex flex-col ml-64">
-        <Header title="Products" searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <div className="flex-1 flex flex-col md:ml-64 w-full">
+        <Header title="Products" searchQuery={searchQuery} setSearchQuery={setSearchQuery} onMenuClick={() => setIsMobileSidebarOpen(true)}/>
 
         {/* Page Content */}
         <div className="p-8 flex-1 overflow-y-auto">
           
           {/* Top Bar: Tabs & Add Button */}
-          <div className="flex justify-between items-center mb-8">
-            {/* Tabs */}
-            <div className="flex gap-8 border-b border-gray-200 w-full max-w-md">
+          <div className="flex justify-between items-center mb-8 gap-4">
+            {/* Tabs - made scrollable on mobile if they overflow */}
+            <div className="flex gap-4 md:gap-8 border-b border-gray-200 w-full overflow-x-auto no-scrollbar">
               <button 
                 onClick={() => setActiveTab('Published')}
-                className={`pb-3 px-1 text-sm font-medium transition-all ${
-                  activeTab === 'Published' 
-                    ? 'border-b-2 border-brand-blue text-brand-blue' 
-                    : 'text-gray-500 hover:text-gray-700'
+                className={`pb-3 px-1 text-sm font-medium whitespace-nowrap transition-all ${
+                  activeTab === 'Published' ? 'border-b-2 border-brand-blue text-brand-blue' : 'text-gray-500'
                 }`}
               >
                 Published
               </button>
               <button 
                 onClick={() => setActiveTab('Unpublished')}
-                className={`pb-3 px-1 text-sm font-medium transition-all ${
-                  activeTab === 'Unpublished' 
-                    ? 'border-b-2 border-brand-blue text-brand-blue' 
-                    : 'text-gray-500 hover:text-gray-700'
+                className={`pb-3 px-1 text-sm font-medium whitespace-nowrap transition-all ${
+                  activeTab === 'Unpublished' ? 'border-b-2 border-brand-blue text-brand-blue' : 'text-gray-500'
                 }`}
               >
                 Unpublished
               </button>
             </div>
 
-            {/* Add Button */}
+            {/* Add Button: Text hidden on mobile, only Plus icon shown */}
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-2 text-gray-600 hover:text-brand-blue font-medium transition"
+              className="flex items-center justify-center gap-2 p-2 md:p-0 text-gray-600 hover:text-brand-blue font-medium transition min-w-10"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" /></svg>
-              Add Products
+              <div className="bg-gray-100 md:bg-transparent p-2 rounded-full md:p-0">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" /></svg>
+              </div>
+              <span className="hidden md:block">Add Products</span>
             </button>
           </div>
 

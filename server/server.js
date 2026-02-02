@@ -13,7 +13,7 @@ connectDB();
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: 'https://productr-7voc.onrender.com' }));
+app.use(cors({ origin: ['http://localhost:5173','https://productr-7voc.onrender.com'] }));
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));

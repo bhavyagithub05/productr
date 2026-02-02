@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { assest } from '../assets/img';
 
 
 const HomeIcon = () => (
@@ -9,7 +10,7 @@ const ProductIcon = () => (
   <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
 );
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path 
@@ -17,19 +18,39 @@ const Sidebar = () => {
     : "text-gray-400 hover:text-white";
 
   return (
-    <div className="w-64 bg-sidebar-dark h-screen fixed left-0 top-0 flex flex-col text-white">
-      {/* Logo Area */}
-      <div className="h-16 flex items-center px-6 border-b border-gray-700 font-bold text-2xl tracking-wide">
-        Productr <span className="text-brand-orange ml-1">CO</span>
-      </div>
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden" 
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
 
-      {/* Navigation */}
-      <nav className="mt-6 flex-1">
-        <Link to="/products" className={`flex items-center px-6 py-3 transition-colors ${isActive('/products')}`}>
-          <ProductIcon /> Products
-        </Link>
-      </nav>
-    </div>
+      {/* Sidebar Container */}
+      <div className={`
+        w-64 bg-sidebar-dark h-screen fixed left-0 top-0 flex flex-col text-white z-50 transition-transform duration-300
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
+      `}>
+        <div className="h-16 flex items-center justify-between px-6 border-b border-gray-700 font-bold text-2xl">
+          <span className='flex gap-2 items-center'>Productr <img className='size-6' src={assest.Vector} alt="" /></span>
+          {/* Close button for mobile */}
+          <button className="md:hidden" onClick={() => setIsOpen(false)}>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+
+        <nav className="mt-6 flex-1">
+          <Link 
+            to="/products" 
+            onClick={() => setIsOpen(false)} // Close on navigate
+            className={`flex items-center px-6 py-4 transition-colors ${isActive('/products')}`}
+          >
+            <ProductIcon /> Products
+          </Link>
+        </nav>
+      </div>
+    </>
   );
 };
 
